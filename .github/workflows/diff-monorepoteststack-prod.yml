@@ -85,11 +85,11 @@ jobs:
           aws-session-token: ${{ steps.creds.outputs.aws-session-token }}
       - name: Describe change set for MonorepoTestStack-prod
         env:
+          NODE_PATH: ${{ github.workspace }}/infra/node_modules
           STACK_NAME: ${{ steps.create-changeset.outputs.cf-stack-name }}
           CHANGE_SET_NAME: MonorepoTestStack-prod
           GITHUB_COMMENT_URL: ${{ github.event.pull_request.comments_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx ts-node .github/workflows/scripts/describe-cfn-changeset.ts
-        working-directory: .
+        run: npx ts-node --transpile-only $GITHUB_WORKSPACE/.github/workflows/scripts/describe-cfn-changeset.ts
       - name: Delete changeset for MonorepoTestStack-prod
         run: aws cloudformation delete-change-set --change-set-name MonorepoTestStack-prod --stack-name "${{ steps.create-changeset.outputs.cf-stack-name }}" --region us-east-2
