@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'IAM role for CDK Drift Detection Workflow'
+
+Parameters:
+  GitHubOIDCRoleArn:
+    Type: String
+    Description: 'ARN of the existing GitHub OIDC role that can assume this drift role'
+    Default: 'arn:aws:iam::891377240835:role/GitHubActionsOidcRoleDevOps'
+
+Resources:
+  # CloudFormation Drift Detection Role - minimal permissions for drift detection operations
+  CdkDriftRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: 'cdk-drift-workflow-iam-role'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !Ref GitHubOIDCRoleArn
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                aws:RequestedRegion: 'us-east-2'
+      Policies:
+        - PolicyName: CloudFormationDriftAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              # CloudFormation drift detection operations
+              - Effect: Allow
+                Action:
+                  - cloudformation:DetectStackDrift
+                  - cloudformation:DescribeStackDriftDetectionStatus
+                  - cloudformation:DescribeStackResourceDrifts
+                  - cloudformation:DescribeStacks
+                  - cloudformation:ListStackResources
+                  - cloudformation:DetectStackResourceDrift
+                Resource: '*'
+
+Outputs:
+  CdkDriftRoleArn:
+    Description: 'ARN of the CDK drift detection role'
+    Value: !GetAtt CdkDriftRole.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-CdkDriftRoleArn'
+
+  CdkDriftRoleName:
+    Description: 'Name of the CDK drift detection role'
+    Value: !Ref CdkDriftRole
+    Export:
+      Name: !Sub '${AWS::StackName}-CdkDriftRoleName'

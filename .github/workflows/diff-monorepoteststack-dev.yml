@@ -42,8 +42,8 @@ jobs:
           fi
       - uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::111122223333:role/GitHubOidcRole
-          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::891377240835:role/GitHubActionsOidcRoleDevOps
+          aws-region: us-east-2
       - name: Create Changeset for MonorepoTestStack-dev
         id: create-changeset
         run: |-
@@ -70,16 +70,16 @@ jobs:
       - id: creds
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::111122223333:role/GitHubOidcRole
-          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::891377240835:role/GitHubActionsOidcRoleDevOps
+          aws-region: us-east-2
       - name: Assume CloudFormation Changeset Role
         id: changeset-role
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::111122223333:role/cdk-diff-workflow-iam-role
+          role-to-assume: arn:aws:iam::590183750202:role/cdk-diff-workflow-iam-role
           role-chaining: true
           role-skip-session-tagging: true
-          aws-region: us-east-1
+          aws-region: us-east-2
           aws-access-key-id: ${{ steps.creds.outputs.aws-access-key-id }}
           aws-secret-access-key: ${{ steps.creds.outputs.aws-secret-access-key }}
           aws-session-token: ${{ steps.creds.outputs.aws-session-token }}
@@ -91,4 +91,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx ts-node $GITHUB_WORKSPACE/.github/workflows/scripts/describe-cfn-changeset.ts
       - name: Delete changeset for MonorepoTestStack-dev
-        run: aws cloudformation delete-change-set --change-set-name MonorepoTestStack-dev --stack-name "${{ steps.create-changeset.outputs.cf-stack-name }}" --region us-east-1
+        run: aws cloudformation delete-change-set --change-set-name MonorepoTestStack-dev --stack-name "${{ steps.create-changeset.outputs.cf-stack-name }}" --region us-east-2

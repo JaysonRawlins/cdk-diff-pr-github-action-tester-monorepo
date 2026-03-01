@@ -83,6 +83,26 @@
         }
       ]
     },
+    "deploy-cdkdiff-iam-template": {
+      "name": "deploy-cdkdiff-iam-template",
+      "description": "Deploy the CDK Diff IAM template via CloudFormation (accepts extra AWS CLI args, e.g., --parameter-overrides Key=Value...)",
+      "steps": [
+        {
+          "exec": "aws cloudformation deploy --template-file cdk-diff-workflow-iam-template.yaml --stack-name cdk-diff-workflow-iam-role --capabilities CAPABILITY_NAMED_IAM",
+          "receiveArgs": true
+        }
+      ]
+    },
+    "deploy-cdkdrift-iam-template": {
+      "name": "deploy-cdkdrift-iam-template",
+      "description": "Deploy the CDK Drift Detection IAM template via CloudFormation (accepts extra AWS CLI args, e.g., --parameter-overrides Key=Value...)",
+      "steps": [
+        {
+          "exec": "aws cloudformation deploy --template-file cdk-drift-workflow-iam-template.yaml --stack-name cdk-drift-workflow-iam-role --capabilities CAPABILITY_NAMED_IAM",
+          "receiveArgs": true
+        }
+      ]
+    },
     "destroy": {
       "name": "destroy",
       "description": "Destroys your cdk app in the AWS cloud",
@@ -215,7 +235,7 @@
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@18 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@types/jest,@types/node,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,jest,projen,ts-jest,ts-node,typescript,@jjrawlins/cdk-diff-pr-github-action"
+          "exec": "npx npm-check-updates@18 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@types/jest,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,jest,projen,ts-jest,ts-node,typescript,@jjrawlins/cdk-diff-pr-github-action"
         },
         {
           "exec": "yarn install --check-files"

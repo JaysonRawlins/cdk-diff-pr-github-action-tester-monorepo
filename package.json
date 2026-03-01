@@ -7,6 +7,8 @@
     "compile": "npx projen compile",
     "default": "npx projen default",
     "deploy": "npx projen deploy",
+    "deploy-cdkdiff-iam-template": "npx projen deploy-cdkdiff-iam-template",
+    "deploy-cdkdrift-iam-template": "npx projen deploy-cdkdrift-iam-template",
     "destroy": "npx projen destroy",
     "diff": "npx projen diff",
     "eject": "npx projen eject",
@@ -26,7 +28,7 @@
   "devDependencies": {
     "@stylistic/eslint-plugin": "^2",
     "@types/jest": "^30.0.0",
-    "@types/node": "^25.3.3",
+    "@types/node": "^20",
     "@typescript-eslint/eslint-plugin": "^8",
     "@typescript-eslint/parser": "^8",
     "aws-cdk": "^2",
@@ -45,6 +47,12 @@
     "@jjrawlins/cdk-diff-pr-github-action": "file:../cdk-diff-pr-github-action",
     "aws-cdk-lib": "^2.189.1",
     "constructs": "^10.5.1"
+  },
+  "resolutions": {
+    "@stylistic/eslint-plugin": "^5"
+  },
+  "engines": {
+    "node": ">= 20.0.0"
   },
   "license": "Apache-2.0",
   "publishConfig": {

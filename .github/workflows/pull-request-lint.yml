@@ -26,5 +26,12 @@ jobs:
           types: |-
             feat
             fix
+            docs
+            style
+            refactor
+            perf
+            test
             chore
+            revert
+            ci
           requireScope: false

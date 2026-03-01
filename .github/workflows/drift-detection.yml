@@ -2,8 +2,6 @@
 
 name: drift-detection
 on:
-  schedule:
-    - cron: 0 6 * * 1
   workflow_dispatch:
     inputs:
       stack:
@@ -23,8 +21,8 @@ jobs:
       id-token: write
       issues: write
     env:
-      AWS_DEFAULT_REGION: us-east-1
-      AWS_REGION: us-east-1
+      AWS_DEFAULT_REGION: us-east-2
+      AWS_REGION: us-east-2
       DRIFT_DETECTION_OUTPUT: drift-results-monorepoteststack-dev.json
       STACK_ID: monorepoteststack-dev
       STACK_NAME: MonorepoTestStack-dev
@@ -53,17 +51,17 @@ jobs:
         if: ${{ github.event_name == 'schedule' || !github.event.inputs.stack || github.event.inputs.stack == 'all' || github.event.inputs.stack == 'monorepoteststack-dev' || github.event.inputs.stack == 'MonorepoTestStack-dev' }}
         uses: aws-actions/configure-aws-credentials@v5
         with:
-          role-to-assume: arn:aws:iam::111122223333:role/GitHubOidcRole
+          role-to-assume: arn:aws:iam::891377240835:role/GitHubActionsOidcRoleDevOps
           role-session-name: GitHubAction
-          aws-region: us-east-1
+          aws-region: us-east-2
       - name: Assume Drift Detection Role
         if: ${{ github.event_name == 'schedule' || !github.event.inputs.stack || github.event.inputs.stack == 'all' || github.event.inputs.stack == 'monorepoteststack-dev' || github.event.inputs.stack == 'MonorepoTestStack-dev' }}
         uses: aws-actions/configure-aws-credentials@v5
         with:
-          role-to-assume: arn:aws:iam::111122223333:role/cdk-drift-detection-role
+          role-to-assume: arn:aws:iam::590183750202:role/cdk-drift-workflow-iam-role
           role-chaining: true
           role-skip-session-tagging: true
-          aws-region: us-east-1
+          aws-region: us-east-2
           aws-access-key-id: ${{ steps.creds.outputs.aws-access-key-id }}
           aws-secret-access-key: ${{ steps.creds.outputs.aws-secret-access-key }}
           aws-session-token: ${{ steps.creds.outputs.aws-session-token }}
@@ -72,7 +70,7 @@ jobs:
         if: ${{ github.event_name == 'schedule' || !github.event.inputs.stack || github.event.inputs.stack == 'all' || github.event.inputs.stack == 'monorepoteststack-dev' || github.event.inputs.stack == 'MonorepoTestStack-dev' }}
         env:
           STACK_NAME: MonorepoTestStack-dev
-          AWS_REGION: us-east-1
+          AWS_REGION: us-east-2
           DRIFT_DETECTION_OUTPUT: drift-results-monorepoteststack-dev.json
         run: |-
           set +e
@@ -104,7 +102,7 @@ jobs:
             const driftedStacks = results.filter(r => r.driftStatus === 'DRIFTED');
             if (driftedStacks.length === 0) { console.log('No drift detected'); return 'NO_DRIFT'; }
             const title = 'Drift Detected in monorepoteststack-dev';
-            let body = '## Drift Detection Report\n\n' + '**Stack:** monorepoteststack-dev\n' + '**Region:** us-east-1\n' + '**Time:** ' + new Date().toISOString() + '\n\n';
+            let body = '## Drift Detection Report\n\n' + '**Stack:** monorepoteststack-dev\n' + '**Region:** us-east-2\n' + '**Time:** ' + new Date().toISOString() + '\n\n';
             body += '### Summary\n';
             body += '- Total stacks checked: ' + results.length + '\n';
             body += '- Drifted stacks: ' + driftedStacks.length + '\n\n';
@@ -137,8 +135,8 @@ jobs:
       id-token: write
       issues: write
     env:
-      AWS_DEFAULT_REGION: us-east-1
-      AWS_REGION: us-east-1
+      AWS_DEFAULT_REGION: us-east-2
+      AWS_REGION: us-east-2
       DRIFT_DETECTION_OUTPUT: drift-results-monorepoteststack-prod.json
       STACK_ID: monorepoteststack-prod
       STACK_NAME: MonorepoTestStack-prod
@@ -167,17 +165,17 @@ jobs:
         if: ${{ github.event_name == 'schedule' || !github.event.inputs.stack || github.event.inputs.stack == 'all' || github.event.inputs.stack == 'monorepoteststack-prod' || github.event.inputs.stack == 'MonorepoTestStack-prod' }}
         uses: aws-actions/configure-aws-credentials@v5
         with:
-          role-to-assume: arn:aws:iam::111122223333:role/GitHubOidcRole
+          role-to-assume: arn:aws:iam::891377240835:role/GitHubActionsOidcRoleDevOps
           role-session-name: GitHubAction
-          aws-region: us-east-1
+          aws-region: us-east-2
       - name: Assume Drift Detection Role
         if: ${{ github.event_name == 'schedule' || !github.event.inputs.stack || github.event.inputs.stack == 'all' || github.event.inputs.stack == 'monorepoteststack-prod' || github.event.inputs.stack == 'MonorepoTestStack-prod' }}
         uses: aws-actions/configure-aws-credentials@v5
         with:
-          role-to-assume: arn:aws:iam::444455556666:role/cdk-drift-detection-role
+          role-to-assume: arn:aws:iam::471112928747:role/cdk-drift-workflow-iam-role
           role-chaining: true
           role-skip-session-tagging: true
-          aws-region: us-east-1
+          aws-region: us-east-2
           aws-access-key-id: ${{ steps.creds.outputs.aws-access-key-id }}
           aws-secret-access-key: ${{ steps.creds.outputs.aws-secret-access-key }}
           aws-session-token: ${{ steps.creds.outputs.aws-session-token }}
@@ -186,7 +184,7 @@ jobs:
         if: ${{ github.event_name == 'schedule' || !github.event.inputs.stack || github.event.inputs.stack == 'all' || github.event.inputs.stack == 'monorepoteststack-prod' || github.event.inputs.stack == 'MonorepoTestStack-prod' }}
         env:
           STACK_NAME: MonorepoTestStack-prod
-          AWS_REGION: us-east-1
+          AWS_REGION: us-east-2
           DRIFT_DETECTION_OUTPUT: drift-results-monorepoteststack-prod.json
         run: |-
           set +e
@@ -218,7 +216,7 @@ jobs:
             const driftedStacks = results.filter(r => r.driftStatus === 'DRIFTED');
             if (driftedStacks.length === 0) { console.log('No drift detected'); return 'NO_DRIFT'; }
             const title = 'Drift Detected in monorepoteststack-prod';
-            let body = '## Drift Detection Report\n\n' + '**Stack:** monorepoteststack-prod\n' + '**Region:** us-east-1\n' + '**Time:** ' + new Date().toISOString() + '\n\n';
+            let body = '## Drift Detection Report\n\n' + '**Stack:** monorepoteststack-prod\n' + '**Region:** us-east-2\n' + '**Time:** ' + new Date().toISOString() + '\n\n';
             body += '### Summary\n';
             body += '- Total stacks checked: ' + results.length + '\n';
             body += '- Drifted stacks: ' + driftedStacks.length + '\n\n';

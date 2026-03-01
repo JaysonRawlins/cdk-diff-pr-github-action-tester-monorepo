@@ -30,11 +30,14 @@ jspm_packages/
 *.tgz
 .yarn-integrity
 .cache
+.env
+infra/node_modules
+infra/cdk.out
+infra/lib
 /test-reports/
 junit.xml
 /coverage/
 !/.github/workflows/build.yml
-!/.mergify.yml
 !/.github/workflows/upgrade.yml
 !/.github/pull_request_template.md
 !/test/
@@ -54,4 +57,7 @@ junit.xml
 !/.github/workflows/diff-monorepoteststack-prod.yml
 !/.github/workflows/scripts/detect-drift.ts
 !/.github/workflows/drift-detection.yml
+!/cdk-diff-workflow-iam-template.yaml
+!/cdk-drift-workflow-iam-template.yaml
+!/.npmrc
 !/.projenrc.ts
