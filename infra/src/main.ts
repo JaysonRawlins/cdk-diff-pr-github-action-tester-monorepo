@@ -26,6 +26,11 @@ class MonorepoTestStack extends Stack {
     new CfnOutput(this, 'TopicArn', {
       value: topic.topicArn,
     });
+
+    new CfnOutput(this, 'StackRegion', {
+      value: this.region,
+      description: 'AWS region for this stack',
+    });
   }
 }
 
