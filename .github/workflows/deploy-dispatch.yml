@@ -50,7 +50,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm pack @JaysonRawlins/cdk-diff-pr-github-action-tester-monorepo@${{ github.event.inputs.version }} && tar -xzf *.tgz && mv package cdk.out
+        run: npm pack @JaysonRawlins/cdk-diff-pr-github-action-tester-monorepo@${{ github.event.inputs.version }} --registry=https://npm.pkg.github.com && tar -xzf *.tgz && mv package cdk.out
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
@@ -93,7 +93,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm pack @JaysonRawlins/cdk-diff-pr-github-action-tester-monorepo@${{ github.event.inputs.version }} && tar -xzf *.tgz && mv package cdk.out
+        run: npm pack @JaysonRawlins/cdk-diff-pr-github-action-tester-monorepo@${{ github.event.inputs.version }} --registry=https://npm.pkg.github.com && tar -xzf *.tgz && mv package cdk.out
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
