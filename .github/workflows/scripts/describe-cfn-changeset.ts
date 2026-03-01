@@ -1,0 +1,413 @@
+import { appendFile } from 'fs/promises';
+import { CloudFormationClient, DescribeChangeSetCommand, DescribeStacksCommand, DescribeStackResourceDriftsCommand } from '@aws-sdk/client-cloudformation';
+
+/**
+ * Small sleep helper.
+ */
+const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
+/**
+ * Build the HTML color chip for an action.
+ * Modify=blue, Add=green, Remove=red (match pretty_format.py).
+ */
+function actionChip(action?: string): string {
+  // Use emoji instead of external images for reliability
+  const emojiMap: Record<string, string> = {
+    Modify: '🔵',
+    Add: '🟢',
+    Remove: '🔴',
+  };
+  const mark = action ? (emojiMap[action] ?? '⚪') : '⚪';
+  return `${mark} ${action ?? '-'}`;
+}
+
+/**
+ * Escape HTML special characters.
+ */
+function escapeHtml(str: string): string {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/**
+ * Format a before→after change.
+ */
+function formatChange(name: string, changeType: string | undefined, before: string | undefined, after: string | undefined): string {
+  const changeEmoji = changeType === 'Add' ? '🟢' : changeType === 'Remove' ? '🔴' : '🔵';
+  
+  // If both values exist and are large, use a more compact format
+  const beforeLen = before?.length ?? 0;
+  const afterLen = after?.length ?? 0;
+  const isLarge = beforeLen > 80 || afterLen > 80;
+  
+  if (before && after) {
+    if (isLarge) {
+      return `<details><summary>${changeEmoji} <strong>${escapeHtml(name)}</strong> (modified)</summary><strong>Before:</strong><pre>${escapeHtml(before)}</pre><strong>After:</strong><pre>${escapeHtml(after)}</pre></details>`;
+    }
+    return `${changeEmoji} <strong>${escapeHtml(name)}</strong>: <code>${escapeHtml(before)}</code> → <code>${escapeHtml(after)}</code>`;
+  } else if (after) {
+    if (isLarge) {
+      return `<details><summary>${changeEmoji} <strong>${escapeHtml(name)}</strong> (added)</summary><pre>${escapeHtml(after)}</pre></details>`;
+    }
+    return `${changeEmoji} <strong>${escapeHtml(name)}</strong>: <code>${escapeHtml(after)}</code>`;
+  } else if (before) {
+    if (isLarge) {
+      return `<details><summary>${changeEmoji} <strong>${escapeHtml(name)}</strong> (removed)</summary><pre>${escapeHtml(before)}</pre></details>`;
+    }
+    return `${changeEmoji} <strong>${escapeHtml(name)}</strong>: <s><code>${escapeHtml(before)}</code></s>`;
+  }
+  // Fallback: no values available (API did not return them)
+  return `${changeEmoji} <strong>${escapeHtml(name)}</strong>`;
+}
+
+/**
+ * Extract changed properties/tags/attributes with before/after values.
+ */
+function changedPropertiesHTML(change: any): string {
+  const details = change?.ResourceChange?.Details ?? [];
+  const props: string[] = [];
+  for (const d of details) {
+    const attr = d?.Target?.Attribute;
+    // Use property name if available, otherwise use attribute type
+    const name = d?.Target?.Name ?? attr ?? 'unknown';
+    const changeType = d?.Target?.AttributeChangeType;
+    const before = d?.Target?.BeforeValue;
+    const after = d?.Target?.AfterValue;
+    props.push(formatChange(name, changeType, before, after));
+  }
+  return props.join('<br>');
+}
+
+/**
+ * Determine if a change should be ignored based on logical IDs and/or resource types.
+ * - IGNORE_LOGICAL_IDS: comma-separated list of logical IDs to ignore (default includes 'CDKMetadata')
+ * - IGNORE_RESOURCE_TYPES: comma-separated list of resource types to ignore (e.g., 'AWS::CDK::Metadata')
+ */
+function shouldIgnoreChange(change: any, ignoreIds: Set<string>, ignoreTypes: Set<string>): boolean {
+  const rc = change?.ResourceChange ?? {};
+  const logicalId = rc?.LogicalResourceId as string | undefined;
+  const resourceType = rc?.ResourceType as string | undefined;
+  if (logicalId && ignoreIds.has(logicalId)) return true;
+  if (resourceType && ignoreTypes.has(resourceType)) return true;
+  return false;
+}
+
+/**
+ * Generate the HTML body similar to pretty_format.py
+ */
+function buildHtml(stackName: string, changes: any[]): string {
+  const now = new Date();
+  const timestamp = now.toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
+  let body = `<h1>Change set <sub>${timestamp}</sub></h1><h2>Stack Name: ${stackName}</h2><br>`;
+  if ((changes?.length ?? 0) > 0) {
+    body += '<table><tr><th>Action&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th><th>ID</th><th>Type</th><th>Replacement</th><th>Details</th></tr>';
+    for (const c of changes) {
+      const rc = c?.ResourceChange ?? {};
+      const action = actionChip(rc?.Action);
+      const logicalId = rc?.LogicalResourceId ?? '-';
+      const type = rc?.ResourceType ?? '-';
+      const replacement = rc?.Replacement ?? '-';
+      const details = changedPropertiesHTML(c);
+
+      body += '<tr>';
+      body += `<td>${action}</td>`;
+      body += `<td>${logicalId}</td>`;
+      body += `<td>${type}</td>`;
+      body += `<td>${replacement}</td>`;
+      body += `<td>${details}</td>`;
+      body += '</tr>';
+    }
+    body += '</table>';
+  } else {
+    body += 'no change.';
+  }
+  return body;
+}
+
+/**
+ * Poll DescribeChangeSet until a terminal status, then paginate to retrieve all Changes.
+ */
+async function getTerminalChangeSet(
+  client: CloudFormationClient,
+  stackName: string,
+  changeSetName: string,
+  maxAttempts = 60,
+  delayMs = 3000,
+): Promise<{ status?: string; statusReason?: string; changes: any[] }> {
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const resp = await client.send(new DescribeChangeSetCommand({
+      StackName: stackName,
+      ChangeSetName: changeSetName,
+      IncludePropertyValues: true,
+    }));
+
+    const status = resp.Status;
+    const statusReason = resp.StatusReason;
+
+    if (status === 'CREATE_COMPLETE' || status === 'FAILED') {
+      // Gather all pages
+      const changes: any[] = [];
+      if (resp.Changes) changes.push(...resp.Changes);
+      let next = resp.NextToken;
+      while (next) {
+        const page = await client.send(new DescribeChangeSetCommand({
+          StackName: stackName,
+          ChangeSetName: changeSetName,
+          IncludePropertyValues: true,
+          NextToken: next,
+        }));
+        if (page.Changes) changes.push(...page.Changes);
+        next = page.NextToken;
+      }
+      return { status, statusReason, changes };
+    }
+
+    // Not terminal yet; wait and retry
+    await sleep(delayMs);
+  }
+
+  throw new Error('Timed out waiting for change set to reach a terminal status.');
+}
+
+/**
+ * Parse the Link header from GitHub API responses for pagination.
+ */
+function parseLinkHeader(header: string | null): Record<string, string> {
+  const links: Record<string, string> = {};
+  if (!header) return links;
+  for (const part of header.split(',')) {
+    const match = part.match(/<([^>]+)>;\s*rel="([^"]+)"/);
+    if (match) links[match[2]] = match[1];
+  }
+  return links;
+}
+
+/**
+ * Search existing PR comments for one containing the given marker.
+ * Returns the comment ID if found, null otherwise.
+ */
+async function findExistingComment(commentsUrl: string, token: string, marker: string): Promise<number | null> {
+  let url: string | undefined = `${commentsUrl}?per_page=100`;
+  while (url) {
+    const res = await fetch(url, {
+      headers: {
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github+json',
+      },
+    });
+    if (!res.ok) return null;
+    const comments: any[] = await res.json() as any[];
+    for (const c of comments) {
+      if (typeof c.body === 'string' && c.body.includes(marker)) {
+        return c.id;
+      }
+    }
+    const links = parseLinkHeader(res.headers.get('link'));
+    url = links.next;
+  }
+  return null;
+}
+
+/**
+ * Create or update a PR comment. Uses an HTML marker to find existing comments.
+ * If found, PATCHes the existing comment; otherwise POSTs a new one.
+ */
+async function upsertGithubComment(commentsUrl: string, token: string, body: string, marker: string): Promise<void> {
+  const markedBody = `${marker}\n${body}`;
+  const existingId = await findExistingComment(commentsUrl, token, marker);
+
+  let res: Response;
+  if (existingId) {
+    const baseUrl = commentsUrl.substring(0, commentsUrl.indexOf('/issues/'));
+    const patchUrl = `${baseUrl}/issues/comments/${existingId}`;
+    res = await fetch(patchUrl, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `token ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/vnd.github+json',
+      },
+      body: JSON.stringify({ body: markedBody }),
+    });
+  } else {
+    res = await fetch(commentsUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `token ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/vnd.github+json',
+      },
+      body: JSON.stringify({ body: markedBody }),
+    });
+  }
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(`Failed to ${existingId ? 'update' : 'post'} GitHub comment: ${res.status} ${res.statusText} ${text}`);
+  }
+}
+
+async function appendStepSummary(summaryPath: string, content: string): Promise<void> {
+  await appendFile(summaryPath, `${content}\n`, { encoding: 'utf8' });
+}
+
+/**
+ * Check cached drift status for the stack and return an HTML banner.
+ * Non-fatal: returns empty string on any error.
+ */
+async function getDriftBannerHtml(client: CloudFormationClient, stackName: string): Promise<string> {
+  const stackResp = await client.send(new DescribeStacksCommand({ StackName: stackName }));
+  const stack = stackResp.Stacks?.[0];
+  if (!stack) return '';
+
+  const driftInfo = stack.DriftInformation;
+  const driftStatus = driftInfo?.StackDriftStatus;
+  const lastChecked = driftInfo?.LastCheckTimestamp;
+
+  if (driftStatus === 'IN_SYNC') return '';
+
+  if (driftStatus === 'NOT_CHECKED') {
+    return '<blockquote><p>ℹ️ Drift detection has not been run for this stack.</p></blockquote>';
+  }
+
+  if (driftStatus === 'DRIFTED') {
+    let banner = '<blockquote>';
+
+    try {
+      const driftsResp = await client.send(new DescribeStackResourceDriftsCommand({
+        StackName: stackName,
+        StackResourceDriftStatusFilters: ['MODIFIED', 'DELETED'],
+      }));
+      const drifts = driftsResp.StackResourceDrifts ?? [];
+      const count = drifts.length;
+      const ts = lastChecked ? lastChecked.toISOString() : 'unknown';
+
+      banner += `<h3>⚠️ Stack has drifted (${count} resource${count !== 1 ? 's' : ''} out of sync)</h3>`;
+      banner += `<p>Last drift check: <em>${ts}</em></p>`;
+
+      if (count > 0) {
+        banner += '<details><summary>View drifted resources</summary>';
+        banner += '<table><tr><th>Resource</th><th>Type</th><th>Drift Status</th></tr>';
+        for (const d of drifts) {
+          const logicalId = d.LogicalResourceId ?? '-';
+          const resourceType = d.ResourceType ?? '-';
+          const status = d.StackResourceDriftStatus ?? '-';
+          banner += `<tr><td>${logicalId}</td><td>${resourceType}</td><td>${status}</td></tr>`;
+        }
+        banner += '</table></details>';
+      }
+    } catch (e: any) {
+      const ts = lastChecked ? lastChecked.toISOString() : 'unknown';
+      banner += '<h3>⚠️ Stack has drifted</h3>';
+      banner += `<p>Last drift check: <em>${ts}</em></p>`;
+      banner += `<p><em>Could not retrieve drift details: ${e?.message ?? 'unknown error'}</em></p>`;
+    }
+
+    banner += '</blockquote>';
+    return banner;
+  }
+
+  return '';
+}
+
+async function main() {
+  const {
+    STACK_NAME,
+    CHANGE_SET_NAME,
+    AWS_REGION,
+    GITHUB_TOKEN,
+    GITHUB_COMMENT_URL,
+    GITHUB_STEP_SUMMARY,
+    IGNORE_LOGICAL_IDS,
+    IGNORE_RESOURCE_TYPES,
+  } = process.env;
+
+  if (!STACK_NAME) {
+    throw new Error('STACK_NAME is required');
+  }
+  const region = AWS_REGION || process.env.AWS_DEFAULT_REGION;
+  if (!region) {
+    throw new Error('AWS_REGION is required');
+  }
+
+  const changeSetName = CHANGE_SET_NAME || STACK_NAME;
+  const marker = `<!-- cdk-diff:stack:${STACK_NAME} -->`;
+
+  const client = new CloudFormationClient({ region });
+
+  let status: string | undefined;
+  let statusReason: string | undefined;
+  let changes: any[] = [];
+
+  try {
+    const result = await getTerminalChangeSet(client, STACK_NAME, changeSetName);
+    status = result.status;
+    statusReason = result.statusReason;
+    changes = result.changes ?? [];
+  } catch (err: any) {
+    // If DescribeChangeSet fails entirely, surface the error
+    console.error('Error describing change set:', err?.message || err);
+    process.exitCode = 1;
+    return;
+  }
+
+  // Apply ignores from env vars (IDs and types). Default ignore IDs include 'CDKMetadata'.
+  const ignoreIdSet = new Set(
+    (IGNORE_LOGICAL_IDS ?? 'CDKMetadata')
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean),
+  );
+  const ignoreTypeSet = new Set(
+    (IGNORE_RESOURCE_TYPES ?? '')
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean),
+  );
+  const filteredChanges = changes.filter(c => !shouldIgnoreChange(c, ignoreIdSet, ignoreTypeSet));
+
+  // Build HTML exactly like pretty_format.py logic (table when there are changes; "no change." otherwise).
+  const html = buildHtml(STACK_NAME, filteredChanges);
+
+  // Check cached drift status (non-fatal)
+  let driftBanner = '';
+  try {
+    driftBanner = await getDriftBannerHtml(client, STACK_NAME);
+  } catch (e: any) {
+    console.error('Drift check failed:', e?.message || e);
+  }
+  const fullHtml = driftBanner + html;
+
+  // Print to stdout
+  console.log(fullHtml);
+
+  // Optionally append to GitHub Step Summary
+  if (GITHUB_STEP_SUMMARY) {
+    try {
+      await appendStepSummary(GITHUB_STEP_SUMMARY, fullHtml);
+      console.error(`Appended HTML to GITHUB_STEP_SUMMARY: ${GITHUB_STEP_SUMMARY}`);
+    } catch (e: any) {
+      console.error('Failed to append to GITHUB_STEP_SUMMARY:', e?.message || e);
+    }
+  }
+
+  // Upsert PR comment (find existing by marker, update or create)
+  if (GITHUB_TOKEN && GITHUB_COMMENT_URL) {
+    try {
+      await upsertGithubComment(GITHUB_COMMENT_URL, GITHUB_TOKEN, fullHtml, marker);
+      console.error('Upserted GitHub PR comment.');
+    } catch (e: any) {
+      console.error('Failed to upsert GitHub PR comment:', e?.message || e);
+      // Do not fail the whole script just for comment posting
+    }
+  }
+
+  // Note: When status is FAILED due to "didn't contain changes", the HTML naturally says "no change."
+  if (status === 'FAILED' && statusReason) {
+    console.error(`Change set status: FAILED. Reason: ${statusReason}`);
+  }
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exitCode = 1;
+});
