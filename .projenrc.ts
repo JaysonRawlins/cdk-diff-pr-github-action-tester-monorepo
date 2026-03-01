@@ -4,6 +4,7 @@ import {
   CdkDriftDetectionWorkflow,
   CdkDriftIamTemplate,
 } from '@jjrawlins/cdk-diff-pr-github-action';
+import { CdkDeployPipeline } from '@jjrawlins/cdk-deploy-pr-github-action';
 import { awscdk, TextFile } from 'projen';
 import { GithubCredentials } from 'projen/lib/github';
 
@@ -45,6 +46,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   },
   deps: [
     '@jjrawlins/cdk-diff-pr-github-action@*',
+    '@jjrawlins/cdk-deploy-pr-github-action',
   ],
   devDeps: [
     '@stylistic/eslint-plugin@^5',
@@ -106,6 +108,32 @@ new CdkDiffStackWorkflow({
     },
   ],
   nodeVersion: workflowNodeVersion,
+});
+
+// ---- CDK Deploy Pipeline (with workingDirectory: 'infra') ----
+
+new CdkDeployPipeline(project, {
+  stackPrefix: 'MonorepoTestStack',
+  iamRoleArn: `arn:aws:iam::${Environments.devops.account}:role/GitHubActionsOidcRoleDevOps`,
+  iamRoleRegion: Environments.devops.region,
+  pkgNamespace: '@JaysonRawlins',
+  useGithubPackagesForAssembly: true,
+  workingDirectory: 'infra',
+  nodeVersion: workflowNodeVersion,
+  stages: [
+    {
+      name: 'dev',
+      env: Environments.dev,
+      environment: 'development',
+    },
+    {
+      name: 'prod',
+      env: Environments.prod,
+      environment: 'production',
+      dependsOn: ['dev'],
+      manualApproval: true,
+    },
+  ],
 });
 
 // ---- CDK Drift Detection Workflow (with workingDirectory: 'infra') ----

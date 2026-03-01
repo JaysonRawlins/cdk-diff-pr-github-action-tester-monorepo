@@ -9,6 +9,7 @@
     "deploy": "npx projen deploy",
     "deploy-cdkdiff-iam-template": "npx projen deploy-cdkdiff-iam-template",
     "deploy-cdkdrift-iam-template": "npx projen deploy-cdkdrift-iam-template",
+    "deploy:dev": "npx projen deploy:dev",
     "destroy": "npx projen destroy",
     "diff": "npx projen diff",
     "eject": "npx projen eject",
@@ -44,6 +45,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@jjrawlins/cdk-deploy-pr-github-action": "file:../cdk-deploy-pr-github-action",
     "@jjrawlins/cdk-diff-pr-github-action": "file:../cdk-diff-pr-github-action",
     "aws-cdk-lib": "^2.189.1",
     "constructs": "^10.5.1"

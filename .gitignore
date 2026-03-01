@@ -55,6 +55,8 @@ junit.xml
 !/.github/workflows/scripts/describe-cfn-changeset.ts
 !/.github/workflows/diff-monorepoteststack-dev.yml
 !/.github/workflows/diff-monorepoteststack-prod.yml
+!/.github/workflows/deploy.yml
+!/.github/workflows/deploy-dispatch.yml
 !/.github/workflows/scripts/detect-drift.ts
 !/.github/workflows/drift-detection.yml
 !/cdk-diff-workflow-iam-template.yaml

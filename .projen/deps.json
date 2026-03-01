@@ -72,6 +72,10 @@
       "type": "build"
     },
     {
+      "name": "@jjrawlins/cdk-deploy-pr-github-action",
+      "type": "runtime"
+    },
+    {
       "name": "@jjrawlins/cdk-diff-pr-github-action",
       "version": "*",
       "type": "runtime"

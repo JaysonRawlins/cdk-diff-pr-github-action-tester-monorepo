@@ -1197,6 +1197,9 @@
     "@types/yargs" "^17.0.33"
     chalk "^4.1.2"
 
+"@jjrawlins/cdk-deploy-pr-github-action@file:../cdk-deploy-pr-github-action":
+  version "0.0.0"
+
 "@jjrawlins/cdk-diff-pr-github-action@file:../cdk-diff-pr-github-action":
   version "0.0.0"
   dependencies:

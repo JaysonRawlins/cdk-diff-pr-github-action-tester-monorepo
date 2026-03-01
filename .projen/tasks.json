@@ -103,6 +103,15 @@
         }
       ]
     },
+    "deploy:dev": {
+      "name": "deploy:dev",
+      "description": "Deploy to dev",
+      "steps": [
+        {
+          "exec": "npx cdk deploy MonorepoTestStack-dev --require-approval never"
+        }
+      ]
+    },
     "destroy": {
       "name": "destroy",
       "description": "Destroys your cdk app in the AWS cloud",
@@ -235,13 +244,13 @@
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@18 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@types/jest,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,jest,projen,ts-jest,ts-node,typescript,@jjrawlins/cdk-diff-pr-github-action"
+          "exec": "npx npm-check-updates@18 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@types/jest,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,jest,projen,ts-jest,ts-node,typescript,@jjrawlins/cdk-deploy-pr-github-action,@jjrawlins/cdk-diff-pr-github-action"
         },
         {
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @stylistic/eslint-plugin @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk esbuild eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit projen ts-jest ts-node typescript @jjrawlins/cdk-diff-pr-github-action aws-cdk-lib constructs"
+          "exec": "yarn upgrade @stylistic/eslint-plugin @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk esbuild eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit projen ts-jest ts-node typescript @jjrawlins/cdk-deploy-pr-github-action @jjrawlins/cdk-diff-pr-github-action aws-cdk-lib constructs"
         },
         {
           "exec": "npx projen"
