@@ -29,7 +29,7 @@
   "devDependencies": {
     "@stylistic/eslint-plugin": "^2",
     "@types/jest": "^30.0.0",
-    "@types/node": "^20",
+    "@types/node": "^24",
     "@typescript-eslint/eslint-plugin": "^8",
     "@typescript-eslint/parser": "^8",
     "aws-cdk": "^2",
@@ -54,7 +54,7 @@
     "@stylistic/eslint-plugin": "^5"
   },
   "engines": {
-    "node": ">= 20.9.0"
+    "node": ">= 24.x"
   },
   "license": "Apache-2.0",
   "publishConfig": {
