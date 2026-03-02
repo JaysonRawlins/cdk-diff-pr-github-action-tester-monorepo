@@ -1,10 +1,10 @@
+import { CdkDeployPipeline } from '@jjrawlins/cdk-deploy-pr-github-action';
 import {
   CdkDiffIamTemplate,
   CdkDiffStackWorkflow,
   CdkDriftDetectionWorkflow,
   CdkDriftIamTemplate,
 } from '@jjrawlins/cdk-diff-pr-github-action';
-import { CdkDeployPipeline } from '@jjrawlins/cdk-deploy-pr-github-action';
 import { awscdk, TextFile } from 'projen';
 import { GithubCredentials } from 'projen/lib/github';
 
@@ -221,7 +221,7 @@ new CdkDriftDetectionWorkflow({
         'webhook': '${{ secrets.CDK_NOTIFICATIONS_SLACK_WEBHOOK }}',
         'webhook-type': 'incoming-webhook',
         'payload': [
-          `text: "** \${{ env.STACK_NAME }} ** has drifted!"`,
+          'text: "** ${{ env.STACK_NAME }} ** has drifted!"',
           'blocks:',
           '  - type: "section"',
           '    text:',
