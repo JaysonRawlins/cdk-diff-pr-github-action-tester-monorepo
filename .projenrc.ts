@@ -20,7 +20,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   cdkVersion: '2.189.1',
   defaultReleaseBranch: 'main',
   name: 'cdk-diff-pr-github-action-tester-monorepo',
-  minNodeVersion: '20.0.0',
+  minNodeVersion: '20.9.0',
   projenrcTs: true,
   workflowBootstrapSteps: [
     {
