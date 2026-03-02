@@ -1,10 +1,10 @@
+import { CdkDeployPipeline } from '@jjrawlins/cdk-deploy-pr-github-action';
 import {
   CdkDiffIamTemplate,
   CdkDiffStackWorkflow,
   CdkDriftDetectionWorkflow,
   CdkDriftIamTemplate,
 } from '@jjrawlins/cdk-diff-pr-github-action';
-import { CdkDeployPipeline } from '@jjrawlins/cdk-deploy-pr-github-action';
 import { awscdk, TextFile } from 'projen';
 import { GithubCredentials } from 'projen/lib/github';
 
@@ -20,7 +20,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   cdkVersion: '2.189.1',
   defaultReleaseBranch: 'main',
   name: 'cdk-diff-pr-github-action-tester-monorepo',
-  minNodeVersion: '20.0.0',
+  minNodeVersion: '24.x',
   projenrcTs: true,
   workflowBootstrapSteps: [
     {
@@ -108,6 +108,29 @@ new CdkDiffStackWorkflow({
     },
   ],
   nodeVersion: workflowNodeVersion,
+  preGitHubSteps: ({ stack, workingDirectory }: { stack: string; workingDirectory?: string }) => [
+    {
+      name: `Notify Slack - Diff Starting (${stack})`,
+      uses: 'slackapi/slack-github-action@v2.1.1',
+      with: {
+        'webhook': '${{ secrets.CDK_NOTIFICATIONS_SLACK_WEBHOOK }}',
+        'webhook-type': 'incoming-webhook',
+        'payload': `text: "CDK Diff starting for *${stack}* (wd: ${workingDirectory ?? 'root'}) on PR #\${{ github.event.pull_request.number }}"`,
+      },
+    },
+  ],
+  postGitHubSteps: ({ stack }: { stack: string; workingDirectory?: string }) => [
+    {
+      name: `Notify Slack - Diff Complete (${stack})`,
+      uses: 'slackapi/slack-github-action@v2.1.1',
+      if: 'always()',
+      with: {
+        'webhook': '${{ secrets.CDK_NOTIFICATIONS_SLACK_WEBHOOK }}',
+        'webhook-type': 'incoming-webhook',
+        'payload': `text: "CDK Diff completed for *${stack}* on PR #\${{ github.event.pull_request.number }}"`,
+      },
+    },
+  ],
 });
 
 // ---- CDK Deploy Pipeline (with workingDirectory: 'infra') ----
@@ -134,6 +157,29 @@ new CdkDeployPipeline(project, {
       manualApproval: true,
     },
   ],
+  preGitHubSteps: ({ stage, workingDirectory }: { stage: string; workingDirectory?: string }) => [
+    {
+      name: `Notify Slack - Deploy Starting (${stage})`,
+      uses: 'slackapi/slack-github-action@v2.1.1',
+      with: {
+        'webhook': '${{ secrets.CDK_NOTIFICATIONS_SLACK_WEBHOOK }}',
+        'webhook-type': 'incoming-webhook',
+        'payload': `text: "CDK Deploy starting for *${stage}* (wd: ${workingDirectory ?? 'root'})"`,
+      },
+    },
+  ],
+  postGitHubSteps: ({ stage }: { stage: string; workingDirectory?: string }) => [
+    {
+      name: `Notify Slack - Deploy Complete (${stage})`,
+      uses: 'slackapi/slack-github-action@v2.1.1',
+      if: 'always()',
+      with: {
+        'webhook': '${{ secrets.CDK_NOTIFICATIONS_SLACK_WEBHOOK }}',
+        'webhook-type': 'incoming-webhook',
+        'payload': `text: "CDK Deploy completed for *${stage}* - outcome: \${{ steps.deploy.outcome }}"`,
+      },
+    },
+  ],
 });
 
 // ---- CDK Drift Detection Workflow (with workingDirectory: 'infra') ----
@@ -156,6 +202,41 @@ new CdkDriftDetectionWorkflow({
     },
   ],
   nodeVersion: workflowNodeVersion,
+  preGitHubSteps: ({ stack, workingDirectory }: { stack: string; workingDirectory?: string }) => [
+    {
+      name: `Notify Slack - Drift Check Starting (${stack})`,
+      uses: 'slackapi/slack-github-action@v2.1.1',
+      with: {
+        'webhook': '${{ secrets.CDK_NOTIFICATIONS_SLACK_WEBHOOK }}',
+        'webhook-type': 'incoming-webhook',
+        'payload': `text: "Drift detection starting for *${stack}* (wd: ${workingDirectory ?? 'root'})"`,
+      },
+    },
+  ],
+  postGitHubSteps: ({ stack }: { stack: string; workingDirectory?: string }) => [
+    {
+      name: `Notify Slack - Drift Detected (${stack})`,
+      uses: 'slackapi/slack-github-action@v2.1.1',
+      with: {
+        'webhook': '${{ secrets.CDK_NOTIFICATIONS_SLACK_WEBHOOK }}',
+        'webhook-type': 'incoming-webhook',
+        'payload': [
+          'text: "** ${{ env.STACK_NAME }} ** has drifted!"',
+          'blocks:',
+          '  - type: "section"',
+          '    text:',
+          '      type: "mrkdwn"',
+          '      text: "*Stack:* ${{ env.STACK_NAME }} (region ${{ env.AWS_REGION }}) has drifted:exclamation:"',
+          '  - type: "section"',
+          '    fields:',
+          '      - type: "mrkdwn"',
+          '        text: "*Stack ARN*\\n${{ steps.drift.outputs.stack-arn }}"',
+          '      - type: "mrkdwn"',
+          '        text: "*Issue*\\n<${{ github.server_url }}/${{ github.repository }}/issues/${{ steps.issue.outputs.result }}|#${{ steps.issue.outputs.result }}>"',
+        ].join('\n'),
+      },
+    },
+  ],
 });
 
 // ---- IAM Templates ----
