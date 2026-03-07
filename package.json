@@ -39,14 +39,14 @@
     "eslint-plugin-import": "^2.32.0",
     "jest": "^30.2.0",
     "jest-junit": "^16",
-    "projen": "^0.99.18",
+    "projen": "^0.99.19",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@jjrawlins/cdk-deploy-pr-github-action": "^0.0.17",
-    "@jjrawlins/cdk-diff-pr-github-action": "^1.9.4",
+    "@jjrawlins/cdk-deploy-pr-github-action": "^0.0.18",
+    "@jjrawlins/cdk-diff-pr-github-action": "^1.9.5",
     "aws-cdk-lib": "^2.189.1",
     "constructs": "^10.5.1"
   },
