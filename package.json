@@ -33,7 +33,7 @@
     "@typescript-eslint/eslint-plugin": "^8",
     "@typescript-eslint/parser": "^8",
     "aws-cdk": "^2",
-    "esbuild": "^0.27.3",
+    "esbuild": "^0.27.4",
     "eslint": "^9",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
@@ -45,8 +45,8 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@jjrawlins/cdk-deploy-pr-github-action": "^0.0.22",
-    "@jjrawlins/cdk-diff-pr-github-action": "^1.9.8",
+    "@jjrawlins/cdk-deploy-pr-github-action": "^0.0.23",
+    "@jjrawlins/cdk-diff-pr-github-action": "^1.9.9",
     "aws-cdk-lib": "^2.189.1",
     "constructs": "^10.5.1"
   },
