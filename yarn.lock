@@ -1202,10 +1202,10 @@
   resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-deploy-pr-github-action/-/cdk-deploy-pr-github-action-0.0.30.tgz#fe8c9edc1cb8b42ad8fa95709cd73fa8f393fcee"
   integrity sha512-tTp/+4Yf2ysEdxHnCqTlMT1dF0IJ83bKivtttVSLRyuGu9LTUxwwXdtKzBDjkyYuiv9Panq8GwkDg2wj48nl1A==
 
-"@jjrawlins/cdk-diff-pr-github-action@^1.9.17":
-  version "1.9.17"
-  resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-diff-pr-github-action/-/cdk-diff-pr-github-action-1.9.17.tgz#39f39dfa374f9e007f300f54b4f8b88e2debbd19"
-  integrity sha512-GUCD4BVzqlZfw41DavxhMNdvT8oylD2YGu7WKQOpgNRe1AygF+2ZflQbAs15/Xi8q3IrJOeIPzZaXUIgyjzEFw==
+"@jjrawlins/cdk-diff-pr-github-action@^1.9.18":
+  version "1.9.18"
+  resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-diff-pr-github-action/-/cdk-diff-pr-github-action-1.9.18.tgz#900b1b825356c9f7a41c23914ef0a0a058cbba39"
+  integrity sha512-1lIMj6+EBHftNafzw0ObnPYYgwAMymwd7maqqrdB2wHprGspJQLZTz7ucl4TpDnBeg8YvxrEjYFlF7ZhJZEufQ==
   dependencies:
     "@aws-sdk/client-cloudformation" "^3.1014.0"
     "@types/crypto-js" "^4.2.2"
@@ -3387,9 +3387,9 @@ get-symbol-description@^1.1.0:
     get-intrinsic "^1.2.6"
 
 get-tsconfig@^4.10.1:
-  version "4.13.6"
-  resolved "https://registry.yarnpkg.com/get-tsconfig/-/get-tsconfig-4.13.6.tgz#2fbfda558a98a691a798f123afd95915badce876"
-  integrity sha512-shZT/QMiSHc/YBLxxOkMtgSid5HFoauqCE3/exfsEcwg1WkeqjG+V40yBbBrsD+jW2HDXcs28xOfcbm2jI8Ddw==
+  version "4.13.7"
+  resolved "https://registry.yarnpkg.com/get-tsconfig/-/get-tsconfig-4.13.7.tgz#b9d8b199b06033ceeea1a93df7ea5765415089bc"
+  integrity sha512-7tN6rFgBlMgpBML5j8typ92BKFi2sFQvIdpAqLA2beia5avZDrMs0FLZiM5etShWq5irVyGcGMEA1jcDaK7A/Q==
   dependencies:
     resolve-pkg-maps "^1.0.0"
 
