@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@jjrawlins/cdk-deploy-pr-github-action": "^0.0.30",
-    "@jjrawlins/cdk-diff-pr-github-action": "^1.9.17",
+    "@jjrawlins/cdk-diff-pr-github-action": "^1.9.18",
     "aws-cdk-lib": "^2.189.1",
     "constructs": "^10.5.1"
   },
