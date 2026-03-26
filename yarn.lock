@@ -66,10 +66,10 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-cloudformation@^3.1016.0":
-  version "3.1016.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-cloudformation/-/client-cloudformation-3.1016.0.tgz#356b7608d4fe0819716ae4af3c8d8ce9a5ac8683"
-  integrity sha512-CYyjo8PrzLrvxugxRpFA1r4oBqGDN6Nx11n8o0RgiikEeUVg+fnC4WP02Hg1gSQuAxI9VvsZHw5yPivroA8nCg==
+"@aws-sdk/client-cloudformation@^3.1017.0":
+  version "3.1017.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-cloudformation/-/client-cloudformation-3.1017.0.tgz#a3686fc8dfd8c88a0ba937787ab2a188edabad73"
+  integrity sha512-GIOy/y2UdTXApjfnILkl56fpxKA5KIpE57BkzxpL3u7HGP4NWPlOGCCZC3jdRZBDfX+iMO8H1tkXzv7llVSQkQ==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
@@ -1202,12 +1202,12 @@
   resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-deploy-pr-github-action/-/cdk-deploy-pr-github-action-0.0.30.tgz#fe8c9edc1cb8b42ad8fa95709cd73fa8f393fcee"
   integrity sha512-tTp/+4Yf2ysEdxHnCqTlMT1dF0IJ83bKivtttVSLRyuGu9LTUxwwXdtKzBDjkyYuiv9Panq8GwkDg2wj48nl1A==
 
-"@jjrawlins/cdk-diff-pr-github-action@^1.9.20":
-  version "1.9.20"
-  resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-diff-pr-github-action/-/cdk-diff-pr-github-action-1.9.20.tgz#c8650d92396e1292f7e7106573c1349a8c7dac4e"
-  integrity sha512-9vCV6qng82W0INbO4nqLYBrbFy+LGbRb2CQYEsBL0FLouMKC1bVSM6ITaL02sQkyH2hIL46SXHQek3ApNxrKqA==
+"@jjrawlins/cdk-diff-pr-github-action@^1.9.21":
+  version "1.9.21"
+  resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-diff-pr-github-action/-/cdk-diff-pr-github-action-1.9.21.tgz#58b5acf23ed6a550f7bb1fdb6f0877fca0d07079"
+  integrity sha512-LqSiKhSCY+y25yn9dUyjWNtoHh/g6gOVs8ynGfuYcw4lObVOvWQI1pgksJsyXPymS4Ux/oIPR8s6+FXUuT/QYg==
   dependencies:
-    "@aws-sdk/client-cloudformation" "^3.1016.0"
+    "@aws-sdk/client-cloudformation" "^3.1017.0"
     "@types/crypto-js" "^4.2.2"
     "@types/js-yaml" "^4.0.9"
     crypto-js "^4.2.0"
@@ -2760,9 +2760,9 @@ eastasianwidth@^0.2.0:
   integrity sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==
 
 electron-to-chromium@^1.5.263:
-  version "1.5.322"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.322.tgz#9c24e49f7098ca19bc87c0e9c7e0ad6ffe4fddca"
-  integrity sha512-vFU34OcrvMcH66T+dYC3G4nURmgfDVewMIu6Q2urXpumAPSMmzvcn04KVVV8Opikq8Vs5nUbO/8laNhNRqSzYw==
+  version "1.5.325"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.325.tgz#c2b3d510435a2b65dd65e891dde7eac0362edfb7"
+  integrity sha512-PwfIw7WQSt3xX7yOf5OE/unLzsK9CaN2f/FvV3WjPR1Knoc1T9vePRVV4W1EM301JzzysK51K7FNKcusCr0zYA==
 
 emittery@^0.13.1:
   version "0.13.1"
