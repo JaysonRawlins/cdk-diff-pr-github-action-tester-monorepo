@@ -1202,10 +1202,10 @@
   resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-deploy-pr-github-action/-/cdk-deploy-pr-github-action-0.0.30.tgz#fe8c9edc1cb8b42ad8fa95709cd73fa8f393fcee"
   integrity sha512-tTp/+4Yf2ysEdxHnCqTlMT1dF0IJ83bKivtttVSLRyuGu9LTUxwwXdtKzBDjkyYuiv9Panq8GwkDg2wj48nl1A==
 
-"@jjrawlins/cdk-diff-pr-github-action@^1.9.23":
-  version "1.9.23"
-  resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-diff-pr-github-action/-/cdk-diff-pr-github-action-1.9.23.tgz#8bc184e36df35fe26a21dfac6c11ae4ad54e24ae"
-  integrity sha512-+VWnedvE3y2m96Gh4Wsmva2qEizhevucQRzC06uRRWjt5DnFQ4CrSrRreyZuATX7VR7W0V+j1e/nkP8VhxmWAg==
+"@jjrawlins/cdk-diff-pr-github-action@^1.9.24":
+  version "1.9.24"
+  resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-diff-pr-github-action/-/cdk-diff-pr-github-action-1.9.24.tgz#1b245ea50226540382b68690d1da9a1784eae436"
+  integrity sha512-pgkN0KBDhNqWKVQCTTT75J5xdlqJnzDOniGR7nceYlVb9VFwI2/9PUZcHvu602rLU651pZXL4i5nTUs0ddmUSQ==
   dependencies:
     "@aws-sdk/client-cloudformation" "^3.1019.0"
     "@types/crypto-js" "^4.2.2"
@@ -1332,9 +1332,9 @@
   integrity sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==
 
 "@sinclair/typebox@^0.34.0":
-  version "0.34.48"
-  resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.34.48.tgz#75b0ead87e59e1adbd6dccdc42bad4fddee73b59"
-  integrity sha512-kKJTNuK3AQOrgjjotVxMrCn1sUJwM76wMszfq1kdU4uYVJjvEWuFQ6HgvLt4Xz3fSmZlTOxJ/Ie13KnIcWQXFA==
+  version "0.34.49"
+  resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.34.49.tgz#4f1369234f2ecf693866476c3b2e1b54d2a9d68e"
+  integrity sha512-brySQQs7Jtn0joV8Xh9ZV/hZb9Ozb0pmazDIASBkYKCjXrXU3mpcFahmK/z4YDhGkQvP9mWJbVyahdtU5wQA+A==
 
 "@sinonjs/commons@^3.0.1":
   version "3.0.1"
@@ -2415,9 +2415,9 @@ balanced-match@^4.0.2:
   integrity sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==
 
 baseline-browser-mapping@^2.9.0:
-  version "2.10.11"
-  resolved "https://registry.yarnpkg.com/baseline-browser-mapping/-/baseline-browser-mapping-2.10.11.tgz#957bea71ccc2e9854287c2575a037d36b3a94b73"
-  integrity sha512-DAKrHphkJyiGuau/cFieRYhcTFeK/lBuD++C7cZ6KZHbMhBrisoi+EvhQ5RZrIfV5qwsW8kgQ07JIC+MDJRAhg==
+  version "2.10.12"
+  resolved "https://registry.yarnpkg.com/baseline-browser-mapping/-/baseline-browser-mapping-2.10.12.tgz#60f9e2172e962839ac313d4e0c8e182090fb6621"
+  integrity sha512-qyq26DxfY4awP2gIRXhhLWfwzwI+N5Nxk6iQi8EFizIaWIjqicQTE4sLnZZVdeKPRcVNoJOkkpfzoIYuvCKaIQ==
 
 bowser@^2.11.0:
   version "2.14.1"
@@ -4783,10 +4783,10 @@ pretty-format@30.3.0, pretty-format@^30.0.0:
     ansi-styles "^5.2.0"
     react-is "^18.3.1"
 
-projen@^0.99.25:
-  version "0.99.25"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.99.25.tgz#fd9190c9baeadab588a8a5dca3f779e46280da0d"
-  integrity sha512-9A9G6pnav5Cb0aJK8fFsvwIhilbxY+8ky5VhshkSRHAi0feEHRqHChzOvKBCCOd2VVVFB3aNLHzkf0rtYaHd6A==
+projen@^0.99.26:
+  version "0.99.26"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.99.26.tgz#fa35d04140a7154439593a64e597f96e33acb97b"
+  integrity sha512-FGaMrSa+BgydIs61enxqgHPePB4r3pOTPFldaN+OmWW65WDWoMyGAqVEb3UaGRtiX6rP9qeQVnvufnEfZfaPRg==
   dependencies:
     "@iarna/toml" "^2.2.5"
     case "^1.6.3"
