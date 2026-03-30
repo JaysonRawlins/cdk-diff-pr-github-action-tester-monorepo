@@ -1202,10 +1202,10 @@
   resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-deploy-pr-github-action/-/cdk-deploy-pr-github-action-0.0.30.tgz#fe8c9edc1cb8b42ad8fa95709cd73fa8f393fcee"
   integrity sha512-tTp/+4Yf2ysEdxHnCqTlMT1dF0IJ83bKivtttVSLRyuGu9LTUxwwXdtKzBDjkyYuiv9Panq8GwkDg2wj48nl1A==
 
-"@jjrawlins/cdk-diff-pr-github-action@^1.9.24":
-  version "1.9.24"
-  resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-diff-pr-github-action/-/cdk-diff-pr-github-action-1.9.24.tgz#1b245ea50226540382b68690d1da9a1784eae436"
-  integrity sha512-pgkN0KBDhNqWKVQCTTT75J5xdlqJnzDOniGR7nceYlVb9VFwI2/9PUZcHvu602rLU651pZXL4i5nTUs0ddmUSQ==
+"@jjrawlins/cdk-diff-pr-github-action@^1.9.25":
+  version "1.9.25"
+  resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-diff-pr-github-action/-/cdk-diff-pr-github-action-1.9.25.tgz#e310353c0e5deba4b8a6d7c6702da1440bbc4a9d"
+  integrity sha512-DEN8NDHBJ6IAK8k9Hc8pAAz+nxRi4MKSv2ql2k62gGHh4pfsxB4JPH0X6LbrS+RUPuIicglgnaGUdx3HRzWYFA==
   dependencies:
     "@aws-sdk/client-cloudformation" "^3.1019.0"
     "@types/crypto-js" "^4.2.2"
@@ -2525,9 +2525,9 @@ camelcase@^6.3.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30001759:
-  version "1.0.30001781"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001781.tgz#344b47c03eb8168b79c3c158b872bcfbdd02a400"
-  integrity sha512-RdwNCyMsNBftLjW6w01z8bKEvT6e/5tpPVEgtn22TiLGlstHOVecsX2KHFkD5e/vRnIE4EGzpuIODb3mtswtkw==
+  version "1.0.30001782"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001782.tgz#f2b8617f998bc134701c54ce9748af44f646e062"
+  integrity sha512-dZcaJLJeDMh4rELYFw1tvSn1bhZWYFOt468FcbHHxx/Z/dFidd1I6ciyFdi3iwfQCyOjqo9upF6lGQYtMiJWxw==
 
 case@1.6.3, case@^1.6.3:
   version "1.6.3"
