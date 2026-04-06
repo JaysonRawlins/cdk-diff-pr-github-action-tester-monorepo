@@ -1202,10 +1202,10 @@
   resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-deploy-pr-github-action/-/cdk-deploy-pr-github-action-0.0.32.tgz#e0a6a1330cea1ccc5ad96636022bb6b2e5208570"
   integrity sha512-SH8VW/Q0Im13lm6Lsii2ijfvL0NDOq5GEP7M7Wk1eLPd4HlfnAPp8aDhAkCxDYl270HS4phQ0FdvBk2R+MMm9w==
 
-"@jjrawlins/cdk-diff-pr-github-action@^1.10.2":
-  version "1.10.2"
-  resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-diff-pr-github-action/-/cdk-diff-pr-github-action-1.10.2.tgz#3abc9ffc94d39a2dd6a5e6b3af32b4548a9877f6"
-  integrity sha512-m/5yKMOHNlDXv+UDRLDa0ftJByXuBBQRt7WeSVnK98GUy/s1UMBszEy2Ttyfw9ARxiKu+alC2QXVabGtGdWxBw==
+"@jjrawlins/cdk-diff-pr-github-action@^1.10.4":
+  version "1.10.4"
+  resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-diff-pr-github-action/-/cdk-diff-pr-github-action-1.10.4.tgz#4d6dc1b6bf223811ab2fe67a6216786cd501b478"
+  integrity sha512-hHUZL1z8Ktg0GupDFH6j2REoj/4sWpkRW5KXamZoHS9Qw0ig+NnMFbEI9aC2z/hgXpC+ZxV89Y/xu+yZ631tJw==
   dependencies:
     "@aws-sdk/client-cloudformation" "^3.1024.0"
     "@types/crypto-js" "^4.2.2"
@@ -2405,9 +2405,9 @@ balanced-match@^4.0.2:
   integrity sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==
 
 baseline-browser-mapping@^2.10.12:
-  version "2.10.14"
-  resolved "https://registry.yarnpkg.com/baseline-browser-mapping/-/baseline-browser-mapping-2.10.14.tgz#d25463733a8f80bb59ab9f797c902dc88832d47c"
-  integrity sha512-fOVLPAsFTsQfuCkvahZkzq6nf8KvGWanlYoTh0SVA0A/PIUxQGU2AOZAoD95n2gFLVDW/jP6sbGLny95nmEuHA==
+  version "2.10.15"
+  resolved "https://registry.yarnpkg.com/baseline-browser-mapping/-/baseline-browser-mapping-2.10.15.tgz#775e7f7237bb1117da66f4388539f57168815104"
+  integrity sha512-1nfKCq9wuAZFTkA2ey/3OXXx7GzFjLdkTiFVNwlJ9WqdI706CZRIhEqjuwanjMIja+84jDLa9rcyZDPDiVkASQ==
 
 bowser@^2.11.0:
   version "2.14.1"
@@ -2515,9 +2515,9 @@ camelcase@^6.3.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30001782:
-  version "1.0.30001784"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001784.tgz#bdf9733a0813ccfb5ab4d02f2127e62ee4c6b718"
-  integrity sha512-WU346nBTklUV9YfUl60fqRbU5ZqyXlqvo1SgigE1OAXK5bFL8LL9q1K7aap3N739l4BvNqnkm3YrGHiY9sfUQw==
+  version "1.0.30001785"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001785.tgz#31f8e3ec1059430d2a7b04fff44c27672c4482df"
+  integrity sha512-blhOL/WNR+Km1RI/LCVAvA73xplXA7ZbjzI4YkMK9pa6T/P3F2GxjNpEkyw5repTw9IvkyrjyHpwjnhZ5FOvYQ==
 
 case@1.6.3, case@^1.6.3:
   version "1.6.3"
