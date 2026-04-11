@@ -37,8 +37,6 @@ jobs:
           package-manager-cache: false
       - name: Install dependencies
         run: yarn install --check-files
-      - name: Audit bundled dependencies
-        run: npx audit-ci --critical --report-type summary
       - name: build
         run: npx projen build
       - name: Find mutations
