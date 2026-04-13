@@ -244,7 +244,7 @@
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@18 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@types/jest,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,jest,projen,ts-jest,ts-node,typescript,@jjrawlins/cdk-deploy-pr-github-action,@jjrawlins/cdk-diff-pr-github-action"
+          "exec": "npx npm-check-updates@20 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@types/jest,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,jest,projen,ts-jest,ts-node,typescript,@jjrawlins/cdk-deploy-pr-github-action,@jjrawlins/cdk-diff-pr-github-action"
         },
         {
           "exec": "yarn install --check-files"
