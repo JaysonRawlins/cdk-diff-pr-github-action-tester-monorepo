@@ -22,6 +22,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   name: 'cdk-diff-pr-github-action-tester-monorepo',
   minNodeVersion: '24.x',
   projenrcTs: true,
+  depsUpgrade: false,
   workflowBootstrapSteps: [
     {
       name: 'Install Aikido Safe-Chain 1.5.3 (in-flight malware scanner, 7d minimum age)',
@@ -264,7 +265,6 @@ new CdkDriftIamTemplate({
   roleName: 'cdk-drift-workflow-iam-role',
 });
 
-// ---- Workflow overrides ----
 
 project.github!.tryFindWorkflow('build')!.file!.addOverride('jobs.build.permissions.id-token', 'write');
 project.github!.tryFindWorkflow('build')!.file!.addOverride('jobs.build.permissions.packages', 'read');
