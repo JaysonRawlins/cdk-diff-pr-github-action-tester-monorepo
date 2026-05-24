@@ -38,7 +38,7 @@
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "jest": "^30.4.2",
-    "jest-junit": "^17",
+    "jest-junit": "^16",
     "projen": "^0.99.63",
     "ts-jest": "^29.4.11",
     "ts-node": "^10.9.2",

@@ -35,15 +35,6 @@ const project = new awscdk.AwsCdkTypeScriptApp({
       },
     },
   ],
-  depsUpgrade: true,
-  depsUpgradeOptions: {
-    workflowOptions: {
-      projenCredentials: GithubCredentials.fromApp({
-        appIdSecret: 'PROJEN_APP_ID',
-        privateKeySecret: 'PROJEN_APP_PRIVATE_KEY',
-      }),
-    },
-  },
   deps: [
     '@jjrawlins/cdk-diff-pr-github-action@*',
     '@jjrawlins/cdk-deploy-pr-github-action',
