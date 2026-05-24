@@ -22,6 +22,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   name: 'cdk-diff-pr-github-action-tester-monorepo',
   minNodeVersion: '24.x',
   projenrcTs: true,
+  depsUpgrade: false,
   workflowBootstrapSteps: [
     {
       name: 'configure aws credentials',
@@ -248,31 +249,10 @@ new CdkDriftIamTemplate({
   roleName: 'cdk-drift-workflow-iam-role',
 });
 
-// ---- Workflow overrides ----
 
 project.github!.tryFindWorkflow('build')!.file!.addOverride('jobs.build.permissions.id-token', 'write');
 project.github!.tryFindWorkflow('build')!.file!.addOverride('jobs.build.permissions.packages', 'read');
 project.github!.tryFindWorkflow('build')!.file!.addOverride('jobs.build.env.GITHUB_TOKEN', '${{ secrets.GITHUB_TOKEN }}');
-
-project.github!.tryFindWorkflow('upgrade')!.file!.addOverride('jobs.upgrade.permissions.id-token', 'write');
-project.github!.tryFindWorkflow('upgrade')!.file!.addOverride('jobs.upgrade.permissions.packages', 'write');
-project.github!.tryFindWorkflow('upgrade')!.file!.addOverride('jobs.upgrade.permissions.pull-requests', 'write');
-project.github!.tryFindWorkflow('upgrade')!.file!.addOverride('jobs.upgrade.permissions.contents', 'write');
-project.github!.tryFindWorkflow('upgrade')!.file!.addOverride('jobs.upgrade.env.GITHUB_TOKEN', '${{ secrets.GITHUB_TOKEN }}');
-
-project.github!.tryFindWorkflow('upgrade')!.file!.addOverride('jobs.pr.permissions.id-token', 'write');
-project.github!.tryFindWorkflow('upgrade')!.file!.addOverride('jobs.pr.permissions.packages', 'write');
-project.github!.tryFindWorkflow('upgrade')!.file!.addOverride('jobs.pr.permissions.pull-requests', 'write');
-project.github!.tryFindWorkflow('upgrade')!.file!.addOverride('jobs.pr.permissions.contents', 'write');
-
-project.github!.tryFindWorkflow('upgrade')!.file!.addOverride('jobs.pr.steps.6', {
-  name: 'Enable auto-merge',
-  if: "steps.create-pr.outputs.pull-request-number != ''",
-  run: 'gh pr merge --auto --squash "${{ steps.create-pr.outputs.pull-request-number }}"',
-  env: {
-    GH_TOKEN: '${{ steps.generate_token.outputs.token }}',
-  },
-});
 
 project.package.addField('resolutions', {
   '@stylistic/eslint-plugin': '^5',

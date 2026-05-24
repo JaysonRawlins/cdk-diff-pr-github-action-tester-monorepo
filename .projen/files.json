@@ -12,7 +12,6 @@
     ".github/workflows/pull-request-lint.yml",
     ".github/workflows/scripts/describe-cfn-changeset.ts",
     ".github/workflows/scripts/detect-drift.ts",
-    ".github/workflows/upgrade.yml",
     ".gitignore",
     ".npmignore",
     ".npmrc",

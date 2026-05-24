@@ -14,7 +14,6 @@
 /.github/workflows/pull-request-lint.yml linguist-generated
 /.github/workflows/scripts/describe-cfn-changeset.ts linguist-generated
 /.github/workflows/scripts/detect-drift.ts linguist-generated
-/.github/workflows/upgrade.yml linguist-generated
 /.gitignore linguist-generated
 /.npmignore linguist-generated
 /.npmrc linguist-generated
