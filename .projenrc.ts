@@ -22,7 +22,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   name: 'cdk-diff-pr-github-action-tester-monorepo',
   minNodeVersion: '24.x',
   projenrcTs: true,
-  depsUpgrade: false,
+  projenVersion: '0.99.52',
   workflowBootstrapSteps: [
     {
       name: 'Install Aikido Safe-Chain 1.5.3 (in-flight malware scanner, 7d minimum age)',
@@ -290,7 +290,7 @@ const dependabot = new Dependabot(project.github!, {
   cooldown: {
     defaultDays: 7,
     semverMinorDays: 7,
-    semverPatchDays: 3,
+    semverPatchDays: 7,
     include: ['*'],
   },
   groups: {
@@ -335,12 +335,12 @@ new YamlFile(project, '.github/workflows/semgrep.yml', {
     permissions: { 'contents': 'read', 'security-events': 'write' },
     jobs: {
       scan: {
-        name: 'Scan',
+        'name': 'Scan',
         'runs-on': 'ubuntu-latest',
-        container: {
+        'container': {
           image: 'semgrep/semgrep@sha256:9349edbadf90c3f3c0c3f55867625354e89680e6fa10d9034042af52fdb0e0d0',
         },
-        steps: [
+        'steps': [
           { uses: 'actions/checkout@v4' },
           {
             name: 'Run Semgrep',
@@ -355,11 +355,11 @@ new YamlFile(project, '.github/workflows/semgrep.yml', {
             ].join('\n'),
           },
           {
-            name: 'Upload SARIF',
-            if: "always() && hashFiles('semgrep.sarif') != ''",
+            'name': 'Upload SARIF',
+            'if': "always() && hashFiles('semgrep.sarif') != ''",
             'continue-on-error': true,
-            uses: 'github/codeql-action/upload-sarif@f411752efdf656cb71aa17b755b22c890960da1d', // v3.35.5
-            with: { sarif_file: 'semgrep.sarif' },
+            'uses': 'github/codeql-action/upload-sarif@f411752efdf656cb71aa17b755b22c890960da1d', // v3.35.5
+            'with': { sarif_file: 'semgrep.sarif' },
           },
         ],
       },
