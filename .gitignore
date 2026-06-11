@@ -60,5 +60,10 @@ junit.xml
 !/.github/workflows/drift-detection.yml
 !/cdk-diff-workflow-iam-template.yaml
 !/cdk-drift-workflow-iam-template.yaml
+!/.github/dependabot.yml
+!/.github/workflows/security.yml
+!/.github/workflows/semgrep.yml
+!/.github/workflows/dependabot-automerge.yml
+!/.github/workflows/dependabot-rebase-stuck.yml
 !/.npmrc
 !/.projenrc.ts
