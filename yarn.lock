@@ -1071,9 +1071,9 @@
   integrity sha512-+c2sn33gq6ZZKvZtSCnVJ65Ie0cDlolZ8wm22dg7RQZ7dOdy4LrbgpMYFXlK+LoHvEEGhkAjiaX+fQwy2AQdCA==
 
 "@jjrawlins/cdk-diff-pr-github-action@^1.10.8":
-  version "1.10.8"
-  resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-diff-pr-github-action/-/cdk-diff-pr-github-action-1.10.8.tgz#ada4c5445d1841c89378ffb24006109061491d6b"
-  integrity sha512-wj1BsvCbCbG+yVSltHpWCq+EatUT6MOaxgaqfvOW21xjvh+zcOORIu2EHDPYrSyj4RNZokvF7oPx97sH8VhP9g==
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-diff-pr-github-action/-/cdk-diff-pr-github-action-1.11.1.tgz#402d1800b9c9704aea24555f98869d5446dbe9a1"
+  integrity sha512-Vtrx2df1Bgi32jwOinTyUDUKmQcRG+eOXhTiuuhTNTVaxf74izPCVW+61Sh/lRWvGks77qSVmyxq2nUcMFFLLA==
   dependencies:
     "@aws-sdk/client-cloudformation" "^3.1024.0"
     "@types/crypto-js" "^4.2.2"
