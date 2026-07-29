@@ -1071,9 +1071,9 @@
   integrity sha512-+c2sn33gq6ZZKvZtSCnVJ65Ie0cDlolZ8wm22dg7RQZ7dOdy4LrbgpMYFXlK+LoHvEEGhkAjiaX+fQwy2AQdCA==
 
 "@jjrawlins/cdk-diff-pr-github-action@^1.10.8":
-  version "1.11.1"
-  resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-diff-pr-github-action/-/cdk-diff-pr-github-action-1.11.1.tgz#402d1800b9c9704aea24555f98869d5446dbe9a1"
-  integrity sha512-Vtrx2df1Bgi32jwOinTyUDUKmQcRG+eOXhTiuuhTNTVaxf74izPCVW+61Sh/lRWvGks77qSVmyxq2nUcMFFLLA==
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/@jjrawlins/cdk-diff-pr-github-action/-/cdk-diff-pr-github-action-1.12.0.tgz#1ac32c691bbea5a1404bcbc7ff1241be1cbbe88e"
+  integrity sha512-Y2ZgIZFSuoDWspsYQr0j+rb/E7DXBLSTGLkSfo6stduWpAUmXdeTotOJmJaIwvC5A9FdGvPTfyrJPCLcE/XgFA==
   dependencies:
     "@aws-sdk/client-cloudformation" "^3.1024.0"
     "@types/crypto-js" "^4.2.2"
@@ -3778,14 +3778,7 @@ js-yaml@^3.13.1:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-js-yaml@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-4.1.1.tgz#854c292467705b699476e1a2decc0c8a3458806b"
-  integrity sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==
-  dependencies:
-    argparse "^2.0.1"
-
-js-yaml@^4.3.0:
+js-yaml@^4.1.1, js-yaml@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-4.3.0.tgz#d1900572a7f7cf0b5f540c83673e60bad3436592"
   integrity sha512-1td788aAnnZ5qs7V2QIRl1owjtYpbKt749Y3xauqQgwIIGF/xXWz1wMTEBx5O3LK3lXLVuqXPdPxj2BoFHaW9Q==
